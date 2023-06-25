@@ -1,15 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import baseUrl from "../Api/baseURL";
 import useGetData from "../hooks/useGetData";
-const initialState = { categories: [], loading: true, error: null };
+const initialState = { categories: {}, loading: true, error: null };
 export const getAllCategories = createAsyncThunk(
   "category/getAllCategories",
-  async (_, thunkApi) => {
+  async (limit, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
       //   const res = await baseUrl.get("/api/v1/categories");
-      const res = await useGetData("/api/v1/categories");
-      return res.data;
+      const res = await useGetData(`/api/v1/categories?limit=${limit}`);
+      console.log(res);
+      return res;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -25,7 +26,7 @@ const categories = createSlice({
     });
     builder.addCase(getAllCategories.fulfilled, (state, action) => {
       state.loading = false;
-      state.categories = [...state.categories, ...action.payload];
+      state.categories = { ...action.payload };
     });
     builder.addCase(getAllCategories.rejected, (state, action) => {
       state.loading = true;

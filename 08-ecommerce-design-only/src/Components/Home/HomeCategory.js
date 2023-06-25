@@ -10,18 +10,17 @@ const HomeCategory = () => {
   const { categories, loading } = useSelector((state) => state.categories);
   useEffect(() => {
     dispatch(getAllCategories());
-  }, []);
-  console.log(categories);
+  }, [dispatch]);
   const categoriesWrap = loading ? (
     <div style={{ textAlign: "center" }}>
       <Spinner animation="border" variant="dark" />
     </div>
-  ) : categories ? (
-    categories
+  ) : categories.data ? (
+    categories.data
       .slice(0, 5)
       ?.map((category) => (
         <CategoryCard
-          key={category.id}
+          key={category._id}
           title={category.name}
           img={category.image}
         />

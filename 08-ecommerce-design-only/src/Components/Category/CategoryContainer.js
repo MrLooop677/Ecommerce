@@ -1,14 +1,7 @@
 import React, { useEffect } from "react";
 import { Container, Row, Spinner } from "react-bootstrap";
 import CategoryCard from "./../Category/CategoryCard";
-import { getAllCategories } from "../../RTK/categoriesSlice";
-import { useDispatch, useSelector } from "react-redux";
-const CategoryContainer = () => {
-  const dispatch = useDispatch();
-  const { categories, loading } = useSelector((state) => state.categories);
-  useEffect(() => {
-    dispatch(getAllCategories());
-  }, []);
+const CategoryContainer = ({ loading, categories }) => {
   const categoriesWrap = loading ? (
     <div style={{ textAlign: "center" }}>
       <Spinner animation="border" variant="dark" />
@@ -16,7 +9,7 @@ const CategoryContainer = () => {
   ) : categories ? (
     categories?.map((category) => (
       <CategoryCard
-        key={category.id}
+        key={category._id}
         title={category.name}
         img={category.image}
       />
